@@ -1,0 +1,5 @@
+# Ignore Node modules (as seen in image_4044c0.png)
+url-shortner-frontend/node_modules/
+
+# Ignore environment variables (as seen in image_4044be.png)
+url-shortner-backend/.env
