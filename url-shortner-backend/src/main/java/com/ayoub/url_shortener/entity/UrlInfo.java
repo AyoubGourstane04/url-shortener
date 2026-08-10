@@ -20,7 +20,6 @@ public class UrlInfo {
     private UUID id;
     private String url;
     private String shortCode;
-    private String qrCodePath;
     private LocalDateTime createdAt = LocalDateTime.now();
 
 

@@ -1,28 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-    --color-background: #1a1b26;
-    --color-foreground: #c0caf5;
-
-    --color-card: #24283b;
-
-    --color-primary: #7aa2f7;
-    --color-primary-foreground: #1a1b26;
-
-    --color-secondary: #292e42;
-    --color-secondary-foreground: #7dcfff;
-
-    --color-muted: #292e42;
-    --color-muted-foreground: #a9b1d6;
-
-    --color-border: #414868;
-
-    --radius: 0.75rem;
-
-    --color-highlight: #bb9af7;
-    --color-surface: #1f2335;
-
-    --color-dots: #565f89;
+    --color-background: #09090b; /* Very deep zinc black */
+    --color-foreground: #fafafa; /* Crisp white */
+    
+    --color-card: #18181b; /* Slightly lighter zinc for the card */
+    
+    --color-primary: #3b82f6; /* Vibrant, modern blue for the main button */
+    --color-primary-foreground: #ffffff;
+    
+    --color-secondary: #27272a;
+    --color-secondary-foreground: #e4e4e7;
+    
+    --color-muted: #27272a;
+    --color-muted-foreground: #a1a1aa; /* Softer text for the subtitle */
+    
+    --color-border: #3f3f46; /* Sharper border to define the card edge */
+    
+    --radius: 0.5rem; /* Slightly tighter radius for a sharper, modern feel */
+    
+    --color-highlight: #6366f1; 
+    --color-surface: #09090b;
+    
+    --color-dots: #52525b;
 }
 
 @layer base {

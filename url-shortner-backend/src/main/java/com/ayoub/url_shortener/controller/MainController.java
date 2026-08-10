@@ -6,9 +6,11 @@ import com.ayoub.url_shortener.dto.ShortenRequestDTO;
 import com.ayoub.url_shortener.dto.ShortenResponseDTO;
 import com.ayoub.url_shortener.entity.UrlInfo;
 import com.ayoub.url_shortener.service.MainService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,15 @@ public class MainController {
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode){
-        return mainService.redirect(shortCode);
+        String url = mainService.getURL(shortCode);
+
+        if(url == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(url))
+                .build();
     }
 
     @GetMapping("/qr")

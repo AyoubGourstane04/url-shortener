@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   url-shortner-db:
     image: postgres:16

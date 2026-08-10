@@ -2,7 +2,7 @@ import { Link, QrCode } from "lucide-react";
 import { useState } from "react";
 import { ResponseURL } from "../components/ResponseURL";
 import { ResponseQR } from "../components/ResponseQR";
-import type { ShortenUrlRequest, Tab, TabId } from "../types/projTypes";
+import type { Tab, TabId } from "../types/projTypes";
 import { shortenUrl } from "../api/urlApi";
 
 
@@ -31,6 +31,37 @@ export const InputCard = () => {
     const handleGenerate = () =>{
         isGenerateClicked(true);
     }
+
+    const clickButton = (btnId: string): void => {
+        const btn = document.querySelector<HTMLButtonElement>(`#${btnId}`);
+        btn?.click();
+    }
+
+    const handleEnterClicked = (event: KeyboardEvent, targetOp: string): void => {
+        if(event.key === 'Enter'){
+            event.preventDefault();
+            // event.stopPropagation();
+            event.stopImmediatePropagation();
+            switch (targetOp){
+                case 'shorten':
+                    clickButton("shortenBtn");
+                    break;
+                case 'qrGenerate':
+                    clickButton("qrGenerateBtn");
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+
+    const shortenInput = document.querySelector<HTMLInputElement>("#shortenInput");
+    shortenInput?.addEventListener("keydown", (e) => handleEnterClicked(e, "shorten"))
+
+    const qrGenerateInput = document.querySelector<HTMLInputElement>("#qrGenerateInput");
+    qrGenerateInput?.addEventListener("keydown", (e) => handleEnterClicked(e, "qrGenerate"));
+
+
 
 
 
@@ -71,13 +102,19 @@ export const InputCard = () => {
                         <div className="flex flex-col gap-3 sm:flex-row">
                             <input 
                                     type="url" 
+                                    id="shortenInput"
                                     placeholder="https://example.com/your-long-url"
                                     className="min-w-0 flex-1 rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground
                                         outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"     
-                                    onChange={(e) => setUrlToShorten(e.target.value)}
+                                    onChange={(e) =>{ 
+                                        setUrlToShorten(e.target.value);
+                                        setShortUrl("");
+                                    }}
+                                    onInput={() =>  setShortUrl("")}
                             />
                             <button 
                                 type="button"
+                                id="shortenBtn"
                                 className="cursor-pointer rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foregorund transition-all hover:opacity-90 active:scale-[0.98]"      
                                 onClick={handleShorten}
                             >
@@ -111,13 +148,18 @@ export const InputCard = () => {
 
                         <div className="flex flex-col gap-3 sm:flex-row">
                             <input 
-                                    type="url" 
+                                    type="url"                                 
+                                    id="qrGenerateInput"
                                     placeholder="https://example.com"
                                     className="min-w-0 flex-1 rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground
                                         outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"     
-                                    onChange={(e) => setUrlToGenerate(e.target.value)}
+                                    onChange={(e) => {
+                                        setUrlToGenerate(e.target.value);
+                                        isGenerateClicked(false);
+                                    }}
                             />
                             <button 
+                                id="qrGenerateBtn"     
                                 type="button"
                                 className="cursor-pointer rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foregorund transition-all hover:opacity-90 active:scale-[0.98]"    
                                 onClick={handleGenerate}
