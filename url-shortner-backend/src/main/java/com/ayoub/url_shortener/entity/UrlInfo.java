@@ -18,8 +18,13 @@ public class UrlInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String url;
+
+    @Column(unique = true)
     private String shortCode;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
 

@@ -2,11 +2,15 @@ import { Link, QrCode } from "lucide-react";
 import { useState } from "react";
 import { ResponseURL } from "../components/ResponseURL";
 import { ResponseQR } from "../components/ResponseQR";
-import type { Tab, TabId } from "../types/projTypes";
+import type { Message, Tab, TabId } from "../types/projTypes";
 import { shortenUrl } from "../api/urlApi";
+import { MessagePopUp } from "../components/MessagePopUp";
+import { isURLValid } from "../helpers/funcs";
 
 
 export const InputCard = () => {
+
+    const [message , setMessage] = useState<Message | null>(null);
 
     const [activeTab, setActiveTab] = useState<TabId>('shorten-url');
 
@@ -21,15 +25,40 @@ export const InputCard = () => {
 
 
     const handleShorten = () => {
+        if(urlToShorten === null || urlToShorten === ""){
+            setMessage({state: "error", message: "Error: Try Typing or Pasting a URL To shorten it."});
+            return;
+        }
+
+        if(!isURLValid(urlToShorten)){
+            setMessage({state: "error", message: "Error: Invalid URL."});
+            return;
+        }
+
+
         const request = {url: urlToShorten};
-        shortenUrl(request).then(res => setShortUrl(res));
+        shortenUrl(request).then(res => {
+            setShortUrl(res);
+            setMessage({state: "success", message: "URL Shorten Successfully."});
+        }).catch(err => setMessage({state: "error", message: `${err}.`}));
     };
 
     const [generateClicked, isGenerateClicked] = useState(false);
     const [urlToGenerate, setUrlToGenerate] = useState<string>("");
 
     const handleGenerate = () =>{
+        if(urlToShorten === null || urlToShorten === ""){
+            setMessage({state: "error", message: "Error: Try Typing or Pasting a URL To Generate Its QR Code."});
+            return;
+        }
+
+        if(!isURLValid(urlToGenerate)){
+            setMessage({state: "error", message: "Error: Invalid URL."});
+            return;
+        }
+
         isGenerateClicked(true);
+        setMessage({state: "success", message: "QR Code Generated."});
     }
 
     const clickButton = (btnId: string): void => {
@@ -40,7 +69,6 @@ export const InputCard = () => {
     const handleEnterClicked = (event: KeyboardEvent, targetOp: string): void => {
         if(event.key === 'Enter'){
             event.preventDefault();
-            // event.stopPropagation();
             event.stopImmediatePropagation();
             switch (targetOp){
                 case 'shorten':
@@ -67,6 +95,13 @@ export const InputCard = () => {
 
     return (
       <section className="w-full max-w-3xl mx-auto px-4 pb-10">
+           <div className="mb-5">
+                <MessagePopUp
+                    message={message}
+                    setMessage={setMessage}
+                />
+           </div>
+            
             <div className="rounded-2xl border border-border/60 bg-card shadow-lg shadow-black/5 overflow-hidden">
                 <div className="flex items-center gap-1 border-b border-border/60 bg-muted/20 px-4">
                     {tabs.map((tab) => (

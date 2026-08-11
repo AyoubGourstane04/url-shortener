@@ -23,3 +23,17 @@ export interface GenerateQrCodeResponse{
     shortUrl: string;
     qrCodePath: string;
 };
+
+export type PopUpType = 'success' | 'error' | null;
+
+export interface Message{
+    state: PopUpType;
+    message: string;
+};
+
+
+export interface PopUpMessageProps{
+    message: Message | null;
+    setMessage: (msg: Message | null) => void;
+
+}
